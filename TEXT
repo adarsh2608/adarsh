@@ -1,1 +1,4 @@
+"I informed Chrystal that as part of the UAT testing, the bot will pick emails from the folder ROB-104865. This will make it easier to verify which emails have been processed correctly."
 
+
+When it was mentioned that the package version is not matching in UAT, I realized that I haven’t made any recent changes in UAT. I assumed that when we pushed the code from TE1 to TE2, the same package would get updated. Let me push the code again to TE2.
