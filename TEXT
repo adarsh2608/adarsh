@@ -1,4 +1,3 @@
-"I informed Chrystal that as part of the UAT testing, the bot will pick emails from the folder ROB-104865. This will make it easier to verify which emails have been processed correctly."
+I reviewed the logs, and based on the error, it appears that the issue occurred when a special character or an unknown string was encountered, causing the conversion from string to number format to fail. Unfortunately, I don’t have detailed information about the amount involved.
 
-
-When it was mentioned that the package version is not matching in UAT, I realized that I haven’t made any recent changes in UAT. I assumed that when we pushed the code from TE1 to TE2, the same package would get updated. Let me push the code again to TE2.
+To address this, I’ve updated the logs to capture the string, making it easier to identify any problematic characters if the issue arises again.
