@@ -1,13 +1,12 @@
-Subject: Request for Access to Kharadi EON Campus
-
-Dear [Recipient's Name],
-
-I kindly request your approval to grant me access to the Kharadi EON campus for a week. The purpose of my visit is to meet the local IT team to submit my headphones, as well as to connect with my colleagues during this time.
-
-Your assistance in facilitating this access would be greatly appreciated.
-
-Thank you for your consideration.
-
-Best regards,
-[Your Name]
-
+(
+    (
+        LEFT([SECNUM], 1) IN ("1", "2", "3", "4", "5") OR
+        [SECNUM] = "0"
+    )
+    AND [CT] = "FI"
+    AND LEFT([ISIN], 2) = "FI"
+)
+OR
+(
+    LEFT([SECNUM], 1) IN ("1", "2", "3", "4", "5")
+)
