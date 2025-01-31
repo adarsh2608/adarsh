@@ -1,20 +1,24 @@
 (
     (
-        LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5") OR
-        ToString([SECNUM]) = "0"
+        LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5") 
+        OR ToString([SECNUM]) = "0"
     )
     AND [CT] = "FI"
     AND LEFT([ISIN], 2) = "FI"
 )
 OR
 (
-    LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5")
+    (
+        LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5")
+    )
     AND [CT] = "MY"
     AND LEFT([ISIN], 2) = "MY"
 )
 OR
 (
-    LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5")
+    (
+        LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5")
+    )
     AND [RS] = "IL"
     AND LEFT([ISIN], 2) = "IL"
 )
@@ -26,12 +30,12 @@ OR
 )
 OR
 (
-    [SAFEKEEPING ACCOUNT] NOT LIKE "0230000008515052"
+    [SAFEKEEPING ACCOUNT] <> "0230000008515052"
     AND [RS] = "MX"
     AND LEFT([ISIN], 2) = "MX"
     AND NOT (
-        LOWERCASE([DESCRIPTION]) LIKE "*bonos*" OR
-        LOWERCASE([DESCRIPTION]) LIKE "*cetes*" OR
-        LOWERCASE([DESCRIPTION]) LIKE "*untd*"
+        LOWERCASE([DESCRIPTION]) LIKE "*bonos*"
+        OR LOWERCASE([DESCRIPTION]) LIKE "*cetes*"
+        OR LOWERCASE([DESCRIPTION]) LIKE "*untd*"
     )
 )
