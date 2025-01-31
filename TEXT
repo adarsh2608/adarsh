@@ -1,20 +1,12 @@
 (
     (
-        REGEX_Match([SECNUM], "^1.*") OR
-        REGEX_Match([SECNUM], "^2.*") OR
-        REGEX_Match([SECNUM], "^3.*") OR
-        REGEX_Match([SECNUM], "^4.*") OR
-        REGEX_Match([SECNUM], "^5.*") OR
-        [SECNUM] = "0"
+        LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5") OR
+        ToString([SECNUM]) = "0"
     )
     AND [CT] = "FI"
-    AND REGEX_Match([ISIN], "^FI.*")
+    AND LEFT([ISIN], 2) = "FI"
 )
 OR
 (
-    REGEX_Match([SECNUM], "^1.*") OR
-    REGEX_Match([SECNUM], "^2.*") OR
-    REGEX_Match([SECNUM], "^3.*") OR
-    REGEX_Match([SECNUM], "^4.*") OR
-    REGEX_Match([SECNUM], "^5.*")
+    LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5")
 )
