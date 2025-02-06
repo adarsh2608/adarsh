@@ -1,41 +1,13 @@
-(
-    (
-        LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5") 
-        OR ToString([SECNUM]) = "0"
-    )
-    AND [CT] = "FI"
-    AND LEFT([ISIN], 2) = "FI"
-)
-OR
-(
-    (
-        LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5")
-    )
-    AND [CT] = "MY"
-    AND LEFT([ISIN], 2) = "MY"
-)
-OR
-(
-    (
-        LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5")
-    )
-    AND [RS] = "IL"
-    AND LEFT([ISIN], 2) = "IL"
-)
-OR
-(
-    NOT (LEFT(ToString([SECNUM]), 1) IN ("1", "2", "3", "4", "5", "0"))
-    AND [RS] = "GR"
-    AND LEFT([ISIN], 2) = "GR"
-)
-OR
-(
-    [SAFEKEEPING ACCOUNT] <> "0230000008515052"
-    AND [RS] = "MX"
-    AND LEFT([ISIN], 2) = "MX"
-    AND NOT (
-        LOWERCASE([DESCRIPTION]) LIKE "*bonos*"
-        OR LOWERCASE([DESCRIPTION]) LIKE "*cetes*"
-        OR LOWERCASE([DESCRIPTION]) LIKE "*untd*"
-    )
-)
+[RS] = "JP" 
+AND 
+!StartsWith([SECNUM], "1") 
+AND 
+!StartsWith([SECNUM], "2") 
+AND 
+!StartsWith([SECNUM], "3") 
+AND 
+!StartsWith([SECNUM], "4") 
+AND 
+!StartsWith([SECNUM], "5") 
+AND 
+!StartsWith([SECNUM], "0")
