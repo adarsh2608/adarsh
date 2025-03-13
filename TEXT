@@ -1,5 +1,6 @@
+When I investigated the logs, I found that the bot picked up all the screenshots and deleted the one with an amount of 0. However, at that moment, it failed to add the screenshot that contained an amount, even though it was captured and saved. Let me investigate why it was missed."
 
-Hello,
 
-I hope the UAT testing went well. If you are satisfied with the results, can we proceed with the production move? Please let me know if you have any other concerns.
+The failure was due to the Excel format. Although clicking on the column displayed the value as -71, opening the Excel file showed it in a different format. I ran the bot again and didn’t encounter the issue this time, as it was correctly updated as -71.
 
+Could you please record the session next time when a credit journal account is available? That way, I can analyze why it is updating differently."
