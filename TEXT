@@ -1,18 +1,27 @@
+
 from ayx import Alteryx
 import win32com.client as win32
+import os
 
-# Read data from input
+# Read data from Alteryx input
 df = Alteryx.read("#1")
 
 # Initialize Outlook
 outlook = win32.Dispatch('outlook.application')
 
-# Loop through each record
+# Loop through each row
 for index, row in df.iterrows():
     mail = outlook.CreateItem(0)
     mail.To = row['TO']
     mail.Subject = row['Subject']
     mail.HTMLBody = row['MailBody']
+    
+    # Attach file if path is valid
+    attachment_path = row['AttachmentPath']
+    if os.path.isfile(attachment_path):
+        mail.Attachments.Add(attachment_path)
+    else:
+        print(f"Attachment not found: {attachment_path}")
     
     mail.Send()
     print(f"Email sent to: {row['TO']}")
