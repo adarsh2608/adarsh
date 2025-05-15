@@ -1,5 +1,4 @@
-
-from ayx import Alteryx
+फ़ाइल की सामग्री यहाँ दर्ज करें। from ayx import Alteryx
 import win32com.client as win32
 import os
 
@@ -16,12 +15,13 @@ for index, row in df.iterrows():
     mail.Subject = row['Subject']
     mail.HTMLBody = row['MailBody']
     
-    # Attach file if path is valid
-    attachment_path = row['AttachmentPath']
-    if os.path.isfile(attachment_path):
-        mail.Attachments.Add(attachment_path)
+    # Safely handle attachment
+    attachment_path = row.get('AttachmentPath')
+    if isinstance(attachment_path, str) and attachment_path.strip() and os.path.isfile(attachment_path.strip()):
+        mail.Attachments.Add(attachment_path.strip())
+        print(f"Attached: {attachment_path}")
     else:
-        print(f"Attachment not found: {attachment_path}")
+        print(f"No valid attachment for row {index}")
     
     mail.Send()
     print(f"Email sent to: {row['TO']}")
