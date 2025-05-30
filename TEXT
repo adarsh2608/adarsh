@@ -1,8 +1,3 @@
+Hello,
 
-Hi Kendall,
-
-I tested the bot using the text file from May 12th that was attached in the email. When I ran the bot, it successfully extracted all the accounts mentioned in the file into an Excel sheet. At this point, I haven't encountered any issues, and I couldn’t find any errors in the logs for the day the issue occurred.
-
-As a precaution, I can implement additional validation to ensure the data is correctly extracted from the text file to the Excel sheet.
-
-Please let me know 
+I will be coordinating with the Federated team responsible for handling this SDD review tollgate request to identify the areas that require correction in the SDD. Since there are no changes in Section 3.2, the approval of the SDD is still required for the tollgate request to proceed
