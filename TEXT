@@ -1,10 +1,2 @@
-Dear Kendall and Neil,
 
-I investigated the issue and identified the reason why the bot missed account HJ18479 from the ACAT sheet. After extracting all accounts from the text file, the bot proceeds to open the Risk Reflection terminal to retrieve the related 5V and 5F accounts. These retrieved accounts are then updated into the main ACAT Excel file.
-
-However, for account HJ18479, there were no associated 5V, 5F, or G9-prefixed accounts when entered into the terminal under guaranteed accounts. Typically, when a guaranteed account is entered, the terminal should return a 5V or 5F account. In this case, it returned the same ACAT account number, and as a result, the bot was unable to capture the account beginning with 'H'.
-
-Could you please confirm whether the bot is expected to handle guaranteed accounts even if they are the same as the ACAT account number?
-
-Best regards,
-[Your Name]
+Yes, when I executed the bot, it overwrote the account. As previously mentioned, the bot was designed to expect accounts prefixed with either '5V' or '5F'. Since the corresponding entries did not appear, the bot skipped this particular account and proceeded to the next. I will update the code to handle such scenarios by capturing the relevant information from the terminal. In cases where no matching accounts are found under Guaranteed accounts, the bot will retain the ACAT account in the Excel sheet instead of omitting it
