@@ -1,2 +1,13 @@
+Hello Kendall,
 
-Yes, when I executed the bot, it overwrote the account. As previously mentioned, the bot was designed to expect accounts prefixed with either '5V' or '5F'. Since the corresponding entries did not appear, the bot skipped this particular account and proceeded to the next. I will update the code to handle such scenarios by capturing the relevant information from the terminal. In cases where no matching accounts are found under Guaranteed accounts, the bot will retain the ACAT account in the Excel sheet instead of omitting it
+Apologies for the delay — I was occupied with an issue related to another bot, in addition to reviewing the ACAT bot issue.
+
+I have been going through the SDD and assessing the technical feasibility of the bot. During this process, I observed that certain sections under the Loan Servicing portal are not fully compatible with the current version of AA 360. Despite multiple attempts, I was unable to achieve consistent success.
+
+There is a new version of AA 360 currently in the pilot phase, which includes features specifically designed for the ACE workstation. I have been exploring the applicability of these features for the current project. Some of them are functioning well, and I am seeing successful results when capturing fields from the Loan Servicing portal. However, I still need to validate a few additional elements before confirming the suitability of this version, as it remains uncharted for our use cases.
+
+Unlike previous projects, I will need to consult with the CoE before moving the bot to UAT, as this version of AA 360 has not yet been migrated to the production environment.
+
+I will schedule a walkthrough session to present my understanding of the SDD and the current status of the bot.
+
+Could you please let me know when you are expected to return from your block leave?
