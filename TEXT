@@ -1,3 +1,1 @@
-Hello Kendall,
-
-Typically, when no 5V or 5F account is found for an ACAT number in the Reflection terminal, the system displays a message, as shown in the image below. The bot uses this message to identify such cases, retain the corresponding ACAT account, and then proceed to the next one.
+"I will make the necessary changes in the code and inform you once it has been moved to UAT
