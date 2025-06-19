@@ -1,1 +1,7 @@
-In addition to the email below, I would like to clarify that I reviewed the bot’s condition logic. The bot is configured to process only accounts with an account status of "A". Although the account is present in the IA text file retrieved from the source email, it is marked with a status of "X", due to which it was excluded by the bot.
+Got it! Here's a more casual version suitable for a Teams chat:
+
+
+---
+
+Hi, my base location is Hyderabad campus, but I'm currently in Pune and want to log in from the Pune campus. I was informed that I can access it only 5 days a month. Could you help me get access for more than 5 days, or let me know the process to request it?
+
