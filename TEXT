@@ -1,3 +1,15 @@
-I have resolved the space and name variance issues. Please re-run the process and let me know the status.
+Build an automated insight-driven community engagement engine that:
 
-In the meantime, I investigated the different name issue related to one email. Upon checking, I found that there is no discrepancy—the same email was sent to two different individuals. I have attached the email I identified for your reference. Kindly review it.
+1. Analyzes community interaction patterns (via data from forums, chat groups, contribution platforms).
+
+
+2. Identifies dormant users, trending topics, and contribution gaps.
+
+
+3. Sends personalized nudges and suggestions using automation bots (email/chat).
+
+
+4. Rewards contributors using a gamified scorecard.
+
+
+5. Uses Alteryx for data workflows, Automation Anywhere for outreach, and Python for NLP or analytics logic.
