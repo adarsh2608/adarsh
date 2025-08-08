@@ -1,4 +1,5 @@
-I want to create a dashboard using powerapps but i'm new to powerapps as i don't know anything about it, help in building dashboard .
-I already have an excel which contains list of projects of 2024 and 2025 , i need to build a power apps shows all the projects of both 2024 and 2025 with column contains status of project , group, key contact , Idea name, Benefits verified, RAG, planned release, actual release, one page, Analyst, Developer , developer 2
+I found an issue with the Alteryx Email tool. In my Windows 10 workspace, I was able to send emails using SMTP in the Email tool by logging in with my secondary GPN and password through the Alteryx Gallery.
 
-so when someone open the powerapps to the page he can able to see all the projects can able to filter it based on grouping column fields and and can change the data in the column . where actual release date and planned release date should be in date format column . Status column should be green if it is completed . how to build it from scratch and data source is share point
+However, my RPA workspace has been upgraded to Windows 11, and from there, I am unable to send emails because the Email tool appears completely different from the one in the Windows 10 Alteryx Designer. This is despite both having the same version number. The difference is clearly shown in the image I uploaded.
+
+Please advise on how to send emails in this scenario.
