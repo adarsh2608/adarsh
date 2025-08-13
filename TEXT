@@ -1,5 +1,1 @@
-I found an issue with the Alteryx Email tool. In my Windows 10 workspace, I was able to send emails using SMTP in the Email tool by logging in with my secondary GPN and password through the Alteryx Gallery.
-
-However, my RPA workspace has been upgraded to Windows 11, and from there, I am unable to send emails because the Email tool appears completely different from the one in the Windows 10 Alteryx Designer. This is despite both having the same version number. The difference is clearly shown in the image I uploaded.
-
-Please advise on how to send emails in this scenario.
+"As my mentor, Shakir has played a significant role in shaping my professional growth, especially by guiding me in mastering key tools such as Automation Anywhere, Alteryx (where his guidance was most impactful), and Power BI. His insights, hands-on support, and encouragement have not only enhanced my technical expertise but also boosted my confidence to take on complex automation and analytics projects."
