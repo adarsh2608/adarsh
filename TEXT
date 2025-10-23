@@ -1,15 +1,15 @@
 (
-    [COUNTRY_NAME] = "Brazil"
-    AND
-    (
-        ([TYPE] = 1 AND [RS] <> "BR")      /* Omnibus – check BR1.1 */
-        OR
-        ([TYPE] = 2 AND [RS] = "BR")       /* Segregated – check BR2.1 */
-    )
-    AND
-    LEFT([ISIN], 2) = "BR"                 /* ISIN starts with BR */
-    AND
-    [SAFEKEEPING_COUNTRY] <> "Brazil"      /* safekeeping not in Brazil */
-    AND
-    NOT CONTAINS(UPPER([DESCRIPTION]), "MUTUAL FUND") /* exclude mutual funds */
+  [COUNTRY_NAME] = "Brazil"
+  AND
+  (
+    ([TYPE] = 1 AND [RS] <> "BR")
+    OR
+    ([TYPE] = 2 AND [RS] = "BR")
+  )
+  AND
+  LEFT(IF IsNull([ISIN]) THEN "" ELSE [ISIN] ENDIF, 2) = "BR"
+  AND
+  (IF IsNull([SAFEKEEPING_COUNTRY]) THEN "" ELSE [SAFEKEEPING_COUNTRY] ENDIF) <> "Brazil"
+  AND
+  NOT Contains(UPPER(IF IsNull([DESCRIPTION]) THEN "" ELSE [DESCRIPTION] ENDIF), "MUTUAL FUND")
 )
