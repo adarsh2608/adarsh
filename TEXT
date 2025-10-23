@@ -1,1 +1,15 @@
-"As my mentor, Shakir has played a significant role in shaping my professional growth, especially by guiding me in mastering key tools such as Automation Anywhere, Alteryx (where his guidance was most impactful), and Power BI. His insights, hands-on support, and encouragement have not only enhanced my technical expertise but also boosted my confidence to take on complex automation and analytics projects."
+(
+    [COUNTRY_NAME] = "Brazil"
+    AND
+    (
+        ([TYPE] = 1 AND [RS] <> "BR")      /* Omnibus – check BR1.1 */
+        OR
+        ([TYPE] = 2 AND [RS] = "BR")       /* Segregated – check BR2.1 */
+    )
+    AND
+    LEFT([ISIN], 2) = "BR"                 /* ISIN starts with BR */
+    AND
+    [SAFEKEEPING_COUNTRY] <> "Brazil"      /* safekeeping not in Brazil */
+    AND
+    NOT CONTAINS(UPPER([DESCRIPTION]), "MUTUAL FUND") /* exclude mutual funds */
+)
