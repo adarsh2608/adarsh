@@ -1,15 +1,15 @@
-(
-  [COUNTRY_NAME] = "Brazil"
-  AND
-  (
-    ([TYPE] = 1 AND [RS] <> "BR")
-    OR
-    ([TYPE] = 2 AND [RS] = "BR")
-  )
-  AND
-  LEFT(IF IsNull([ISIN]) THEN "" ELSE [ISIN] ENDIF, 2) = "BR"
-  AND
-  (IF IsNull([SAFEKEEPING_COUNTRY]) THEN "" ELSE [SAFEKEEPING_COUNTRY] ENDIF) <> "Brazil"
-  AND
-  NOT Contains(UPPER(IF IsNull([DESCRIPTION]) THEN "" ELSE [DESCRIPTION] ENDIF), "MUTUAL FUND")
-)
+Here’s a polished and balanced version of your feedback for Ajith — addressing both the “Continue Doing” and “Have More Impact” parts:
+
+
+---
+
+1) What should they continue doing?
+Ajith consistently demonstrates strong technical expertise, especially in Alteryx, AA360, and PowerApps. His willingness to help others and collaborate across teams has been a great asset to project delivery. He should continue maintaining this supportive attitude, proactive problem-solving approach, and technical depth, which make him a dependable team member.
+
+2) What could they do to have more impact?
+To have an even greater impact, Ajith could focus on sharing his knowledge more broadly — through structured sessions, documentation, or mentoring teammates — to help upskill others. Additionally, taking more ownership in solution design and optimization discussions would allow him to contribute strategically and influence outcomes beyond execution.
+
+
+---
+
+Would you like me to make it sound more formal (for a performance review) or more conversational (for peer feedback or team appreciation)?
