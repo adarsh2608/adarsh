@@ -1,15 +1,33 @@
-Here’s a polished and balanced version of your feedback for Ajith — addressing both the “Continue Doing” and “Have More Impact” parts:
-
-
----
-
-1) What should they continue doing?
-Ajith consistently demonstrates strong technical expertise, especially in Alteryx, AA360, and PowerApps. His willingness to help others and collaborate across teams has been a great asset to project delivery. He should continue maintaining this supportive attitude, proactive problem-solving approach, and technical depth, which make him a dependable team member.
-
-2) What could they do to have more impact?
-To have an even greater impact, Ajith could focus on sharing his knowledge more broadly — through structured sessions, documentation, or mentoring teammates — to help upskill others. Additionally, taking more ownership in solution design and optimization discussions would allow him to contribute strategically and influence outcomes beyond execution.
-
-
----
-
-Would you like me to make it sound more formal (for a performance review) or more conversational (for peer feedback or team appreciation)?
+1) Strengths and Achievements
+This year, I successfully completed and delivered three projects to production and have two more ready for deployment, pending SDD and code review.
+Projects in Production:
+ROB-102197: CUSIP Lookup
+ROB-103027: ACAT End-to-End – a highly challenging bot that underwent multiple requirement changes and redevelopment cycles.
+ROB-104122
+Projects Ready for Production:
+ROB-105721: IRD1 Exceptions
+ROB-105589: Fixed Rate Contract
+In addition, I rebuilt the entire CMRC workflow, migrating it from an Access database to an Alteryx workflow. This required significant re-engineering as the original database was outdated and required extensive client-driven updates.
+I also participated in a UBS hackathon, collaborating with a cross-functional team to design and present a new automation idea to the wider community.
+As part of the Big Rock initiative, I was responsible for resolving the Alteryx email setup challenge faced by our team. I identified a working solution and also developed an alternative approach using Python scripts, enabling reliable email automation from the Alteryx Designer.
+Throughout the year, I actively collaborated with colleagues to troubleshoot ongoing issues with the ACE portal, sharing workarounds to enhance AA360 functionality. Additionally, I helped foster team engagement by organizing fun sessions that encouraged collaboration and connection beyond day-to-day work.
+Impact:
+Improved process efficiency through multiple automation solutions.
+Strengthened team collaboration and knowledge sharing.
+Enhanced automation capability through technical problem-solving and innovation.
+2) Development Areas
+While I have made good progress in automation delivery and solution design, I recognize a few areas for further growth:
+Documentation & Standardization: Improve efficiency in preparing SDDs and technical documentation to streamline the deployment process.
+Stakeholder Communication: Strengthen early engagement with business users to minimize requirement rework and ensure better alignment.
+Advanced Analytics & Scripting: Enhance my proficiency in Python and Alteryx advanced functions to expand automation capabilities and support more complex use cases.
+Going forward, I aim to focus on these areas to deliver faster, more scalable, and better-documented automation solutions.
+3) UBS Behaviours
+Strengths Demonstrated:
+Collaboration: Worked closely with teammates to resolve ACE portal challenges and shared best practices across projects.
+Innovation: Proactively found new solutions for Alteryx email automation and contributed to hackathon idea development.
+Accountability: Took ownership of complex bots, especially the ACAT End-to-End project, ensuring delivery despite multiple requirement iterations.
+Client Focus: Rebuilt outdated workflows (e.g., CMRC) to align with evolving client needs and improve operational accuracy.
+Opportunities to Demonstrate Further:
+Continue fostering collaboration by mentoring new team members and sharing technical learnings.
+Increase proactive communication with stakeholders to anticipate changes earlier in the project cycle.
+Explore more cross-platform automation opportunities integrating Alteryx, Python, and AA360 for end-to-end business solutions.
