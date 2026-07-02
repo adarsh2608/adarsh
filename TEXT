@@ -1,5 +1,124 @@
-Hi [Manager’s Name], hope you’re doing well.
+To build this automation pipeline in Alteryx, you need a workflow that splits into two primary data streams (`yfile` and `tfile`), updates/standardizes them, applies the dynamic aging lookup from your `rulefile`, and finally merges them together using a Union tool.
 
-I just wanted to check in regarding the promotion list you had mentioned earlier. I remember you said you’d consider adding me, and I wanted to know if there’s any update or possibility of getting shortlisted this time. It would be a great opportunity for me to grow further and also help with a hike.
+Here is the step-by-step design for your Alteryx workflow.
 
-Appreciate your support and guidance alwa
+---
+
+## Workflow Overview Diagram
+
+```
+[yfile Input] ----> [DateTime] ----> [Formula (Recalc Age)] -------------\
+                                                                          >---> [Join (on Age)] ---> [Select] ---\
+[rulefile]    ----> [Multi-Row] ---> [Generate Rows] ---> (Lookup Table) -/                                       \
+                                                                          >---> [Join (on Age)] ---> [Select] ----> [Union] ---> [Output]
+[tfile Input] ----> [DateTime] ----> [Formula (Prep Fields)] ------------/
+
+```
+
+---
+
+## Step 1: Prepare the Aging Lookup Table (`rulefile`)
+
+Instead of hardcoding messy nested `IF/THEN` statements, we will expand your rule file so it acts as an exact-match lookup dictionary.
+
+1. **Input Data Tool:** Bring in your `rulefile`.
+2. **Multi-Row Formula Tool:** Create a new field called `Max_Age` (Int32) to establish the upper boundaries of your brackets:
+* **Expression:** `IF ISNULL([Row+1:Age]) THEN 99999 ELSE [Row+1:Age] - 1 ENDIF`
+
+
+3. **Generate Rows Tool:** Expand the rows so every individual integer day is represented.
+* **Update Existing Field:** Select `Age`.
+* **Initialization Expression:** `[Age]`
+* **Condition Expression:** `[Age] <= [Max_Age]`
+* **Loop Expression:** `[Age] + 1`
+
+
+
+*This gives you a clean lookup table where day `1` through `7` all explicitly map to `"1 - 7"`.*
+
+---
+
+## Step 2: Update and Refresh the Historical Base (`yfile`)
+
+Before adding new records, we must ensure your existing aging file is calculated accurately against today's date ($2026\text{-}07\text{-}02$).
+
+1. **Input Data Tool:** Bring in `yfile`.
+2. **DateTime Tool:** If your incoming `Date` field is a string, convert it to a standard Alteryx Date format (`YYYY-MM-DD`).
+3. **Formula Tool:** Recalculate the numerical age based on the current system date:
+* **Field:** `Age` (Select `Int32`)
+* **Expression:** `DateTimeDiff(DateTimeToday(), [Date], "days")`
+
+
+4. **Select Tool:** Deselect the old, stale `Age Grouping` field (we will replace it with the fresh lookup).
+5. **Join Tool:** * Connect `yfile` to the **L** (Left) anchor.
+* Connect your expanded **Rule Table** to the **R** (Right) anchor.
+* Join on **`Age` = `Age**`.
+* *In the embedded select window, rename the incoming `Age Group` field to `Age Grouping`.*
+
+
+
+---
+
+## Step 3: Parse and Structure the Daily Ingestion File (`tfile`)
+
+Now, structure the incoming `tfile` records to match the core schema of your historical master file.
+
+1. **Input Data Tool:** Bring in `tfile`.
+2. **Formula Tool:** Create and standardize all mandatory target columns:
+* **`Type`**: Standardize the singular value to plural to match your master data:
+```alteryx
+IF [Type] == "Share" THEN "Shares" ELSE [Type] ENDIF
+
+```
+
+
+* **`Amount`**: Map your cash balance over while ensuring proper formatting logic based on transaction type:
+```alteryx
+IF [Type] == "Cash" THEN [Cash Balance] ELSE [Cash Balance] ENDIF
+
+```
+
+
+*(Note: Keep this as a Numeric double data type for calculation consistency. If you need explicit currency symbols, change the column type to V_WString and use `'$' + ToString([Cash Balance], 2)`).*
+* **`Date`**: Dynamic calculation for yesterday's date:
+```alteryx
+DateTimeAdd(DateTimeToday(), -1, "days")
+
+```
+
+
+* **`Age`**: Yesterday's records evaluated against today will always equal 1 day old:
+```alteryx
+DateTimeDiff(DateTimeToday(), [Date], "days")
+
+```
+
+
+* **`Group Owner`**: Set constant: `"Operations"`
+* **`Owner`**: Set constant: `"C.Palmer"`
+* **`Updates`**: Set as blank: `Null()`
+* **`Comment / Status`**: Set as blank: `Null()`
+
+
+3. **Select Tool:** Change field names and drop unnecessary processing infrastructure columns to guarantee a perfect schema match with `yfile`:
+* Keep: `Company Name`, `Account#`, `Type`, `Amount`, `Date`, `Age`, `Group Owner`, `Owner`, `Updates`, `Comment / Status`.
+* Drop: `Ticker`, `GL Account`, `Funds Type`, `Cash Balance`, `Reason`.
+
+
+4. **Join Tool:**
+* Connect this stream to the **L** anchor of a second Join tool.
+* Connect the **Rule Table** to the **R** anchor.
+* Join on **`Age` = `Age**`. Rename `Age Group` to `Age Grouping`.
+
+
+
+---
+
+## Step 4: Union, Validate, and Output
+
+1. **Union Tool:** Connect the **J** (Join) outputs from **both** Step 2 (`yfile` stream) and Step 3 (`tfile` stream).
+* Choose **"Configure Automatically by Name"** in the tool configuration settings.
+* This naturally appends the fresh daily `tfile` rows directly underneath your refreshed historical dataset.
+
+
+2. **Output Data Tool:** Write the combined data back to your master tracking destination (Excel sheet or database). Set the Output Options to **"Overwrite Option (or Sheet/Table)"** to ensure your historical tracker updates seamlessly every single day.
