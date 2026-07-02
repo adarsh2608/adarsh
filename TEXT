@@ -1,400 +1,98 @@
-Yes. Based on your screenshots, I'll explain **how to build this workflow in Alteryx Designer from scratch**, exactly as you would build it in a real project. I'll also explain **why each tool is used**.
+Option B is the **best practice** because you are **not hardcoding the age ranges** in your workflow. Instead, the workflow reads the ranges from the **RFile** every time it runs. If tomorrow the business changes the ranges, you only update the RFile—no changes to the workflow are needed.
 
 ---
 
-# Final Workflow
+# Your RFile
 
-```
-        TFile
-          |
-       Select
-          |
-      Formula (Age)
-          |
- Formula (Age Group)
-          |
-Formula (Group Owner)
-          |
-Select (Rename Amount)
-          |
-Auto Field (Optional)
-          |
-Output Data (YFile)
+| Age | Age Group |
+| --- | --------- |
+| 1   | 1 - 7     |
+| 8   | 8 - 30    |
+| 31  | 31 - 60   |
+| 61  | 61 - 90   |
+| 91  | 91 - 180  |
+| 181 | 181 - 365 |
+| 366 | >365      |
 
-RFile (Only for Reference or Dynamic Lookup)
-```
+Think of the **Age** column as the **starting point** of each range.
 
-If your manager insists on using the **RFile**, I'll show that workflow later. First, let's build the easiest and most efficient workflow.
+For example:
 
----
-
-# STEP 1 - Read TFile
-
-Drag an **Input Data Tool**
-
-Browse to
-
-```
-TFile.xlsx
-```
-
-Choose the sheet.
-
-Output should look like
-
-```
-Ticker
-Company Name
-Account#
-Type
-Cash Balance
-Date
-...
-```
+| Age | Represents |
+| --- | ---------- |
+| 1   | 1 - 7      |
+| 8   | 8 - 30     |
+| 31  | 31 - 60    |
+| 61  | 61 - 90    |
+| 91  | 91 - 180   |
+| 181 | 181 - 365  |
+| 366 | >365       |
 
 ---
 
-# STEP 2 - Select Tool
+# Example
 
-Drag a **Select Tool**
+Suppose your YFile contains
 
-Purpose
+| Ticker | Date        |
+| ------ | ----------- |
+| ACN    | 15-May-2026 |
+| TXN    | 28-May-2026 |
+| CARR   | 01-Jun-2026 |
 
-* Remove unnecessary columns
-* Rename columns
-* Arrange columns
+Today's date is
 
-Keep only
-
-```
-Ticker
-Company Name
-Account#
-Type
-Cash Balance
-Date
-```
-
-Rename
-
-```
-Cash Balance
-```
-
-to
-
-```
-Amount
-```
-
-This saves adding another Formula later.
-
----
-
-# STEP 3 - Create Age Column
-
-Drag a **Formula Tool**
-
-Create new column
-
-```
-Age
-```
-
-Datatype
-
-```
-Int32
-```
-
-Formula
-
-If Date is already Date datatype
-
-```alteryx
-DateTimeDiff(DateTimeToday(), [Date], "days")
-```
-
-If Date is string
-
-```alteryx
-DateTimeDiff(
-DateTimeToday(),
-DateTimeParse([Date],"%m-%d-%y"),
-"days")
-```
-
-Example
-
-Today's date
-
-```
+```text
 02-Jul-2026
 ```
 
-Input Date
+After the Formula tool,
 
-```
-30-Jun-2026
-```
+| Ticker | Age |
+| ------ | --- |
+| ACN    | 48  |
+| TXN    | 35  |
+| CARR   | 31  |
 
-Output
-
-```
-2
-```
+Now we need to determine the Age Group.
 
 ---
 
-# STEP 4 - Create Age Group
-
-Again add another **Formula Tool**
-
-Create column
-
-```
-Age Group
-```
-
-Datatype
-
-```
-String
-```
-
-Formula
-
-```alteryx
-IF [Age] >=1 AND [Age]<=7 THEN "1 - 7"
-
-ELSEIF [Age]>=8 AND [Age]<=30 THEN "8 - 30"
-
-ELSEIF [Age]>=31 AND [Age]<=60 THEN "31 - 60"
-
-ELSEIF [Age]>=61 AND [Age]<=90 THEN "61 - 90"
-
-ELSEIF [Age]>=91 AND [Age]<=180 THEN "91 - 180"
-
-ELSEIF [Age]>=181 AND [Age]<=365 THEN "181 - 365"
-
-ELSE "> 365"
-
-ENDIF
-```
-
-Example
-
-Age
-
-```
-48
-```
-
-Output
-
-```
-31 - 60
-```
-
-Age
-
-```
-5
-```
-
-Output
-
-```
-1 - 7
-```
-
-Age
-
-```
-1457
-```
-
-Output
-
-```
->365
-```
-
----
-
-# STEP 5 - Add Group Owner
-
-Add another **Formula Tool**
-
-Create
-
-```
-Group Owner
-```
-
-Formula
-
-```alteryx
-"Operations"
-```
-
----
-
-# STEP 6 - Add Owner
-
-Still inside Formula Tool
-
-Create
-
-```
-Owner
-```
-
-Formula
-
-```alteryx
-"C.Palmer"
-```
-
-Every record now gets
-
-```
-Operations
-
-C.Palmer
-```
-
----
-
-# STEP 7 - Arrange Columns
-
-Add another **Select Tool**
-
-Arrange columns exactly like YFile
-
-```
-Ticker
-
-Company Name
-
-Account#
-
-Type
-
-Amount
-
-Date
-
-Age
-
-Age Group
-
-Group Owner
-
-Owner
-
-Comment/Status
-```
-
-If
-
-```
-Comment/Status
-```
-
-doesn't exist
-
-Add it later using Formula Tool
-
-Formula
-
-```alteryx
-""
-```
-
----
-
-# STEP 8 - Output
-
-Use **Output Data**
-
-Browse to
-
-```
-YFile.xlsx
-```
-
-Select
-
-```
-Overwrite Sheet
-```
-
-Done.
-
----
-
-# Workflow Diagram
+# Step 1 - Input YFile
 
 ```
 Input Data
-     │
-     ▼
- Select
-     │
-     ▼
- Formula
- Create Age
-     │
-     ▼
- Formula
- Age Group
-     │
-     ▼
- Formula
- Group Owner
- Owner
- Comment
-     │
-     ▼
- Select
- Arrange Columns
-     │
-     ▼
- Output Data
 ```
 
----
-
-# Dynamic Workflow Using RFile (Recommended)
-
-If your lead says **don't hardcode the Age Group**, use the **RFile**.
-
-### Step 1
-
-Input
+↓
 
 ```
-TFile
+Formula Tool
 ```
-
-### Step 2
 
 Calculate
 
-```
-Age
-```
-
-### Step 3
-
-Input
-
-```
-RFile
+```alteryx
+Age = DateTimeDiff(DateTimeToday(), [Date], "days")
 ```
 
-It contains
+Output
+
+| Ticker | Age |
+| ------ | --- |
+| ACN    | 48  |
+| TXN    | 35  |
+| CARR   | 31  |
+
+---
+
+# Step 2 - Input RFile
+
+```
+Input Data
+```
+
+Output
 
 | Age | Age Group |
 | --- | --------- |
@@ -408,37 +106,86 @@ It contains
 
 ---
 
-### Step 4
+# Step 3 - Append Fields Tool
 
-Use **Append Fields**
+This is the most important step.
 
-Connect
+Drag an **Append Fields Tool**.
+
+Connect:
+
+### Left Input (T)
 
 ```
-TFile
+YFile (Age calculated)
 ```
 
-to Target
-
-Connect
+### Right Input (S)
 
 ```
 RFile
 ```
 
-to Source
+Configure:
 
-Every transaction now gets all age ranges.
+* Target = **YFile**
+* Source = **RFile**
 
-Suppose
+The Append Fields tool creates a **Cartesian product**.
+
+Suppose YFile has **3 records**.
+
+RFile has **7 records**.
+
+Output becomes
 
 ```
-Age = 48
+3 × 7 = 21 rows
 ```
 
-It becomes
+For **ACN (Age = 48)**, you'll get:
 
-| Age | RFile Age |
+| Ticker | Age | RFile Age | Age Group |
+| ------ | --- | --------- | --------- |
+| ACN    | 48  | 1         | 1-7       |
+| ACN    | 48  | 8         | 8-30      |
+| ACN    | 48  | 31        | 31-60     |
+| ACN    | 48  | 61        | 61-90     |
+| ACN    | 48  | 91        | 91-180    |
+| ACN    | 48  | 181       | 181-365   |
+| ACN    | 48  | 366       | >365      |
+
+This is expected.
+
+---
+
+# Step 4 - Filter Tool
+
+We only want ranges where:
+
+```
+Actual Age >= Starting Age
+```
+
+Expression:
+
+```alteryx
+[Age] >= [Age_RFile]
+```
+
+> **Important:** Rename the RFile "Age" field before the Append Fields tool (for example to `Age_Start`) using a **Select** tool. Otherwise, both inputs will have a field named `Age`, which causes confusion.
+
+So the Filter expression should be:
+
+```alteryx
+[Age] >= [Age_Start]
+```
+
+For Age = 48
+
+Before Filter
+
+| Age | Age_Start |
 | --- | --------- |
 | 48  | 1         |
 | 48  | 8         |
@@ -448,59 +195,41 @@ It becomes
 | 48  | 181       |
 | 48  | 366       |
 
----
+After Filter
 
-### Step 5
+| Age | Age_Start |
+| --- | --------- |
+| 48  | 1         |
+| 48  | 8         |
+| 48  | 31        |
 
-Add a **Filter Tool**
-
-Condition
-
-```alteryx
-[Age] >= [RFile Age]
-```
-
-Now
-
-```
-48
-```
-
-keeps
-
-```
-1
-8
-31
-```
+Everything greater than 48 is removed.
 
 ---
 
-### Step 6
-
-Add a **Sort Tool**
+# Step 5 - Sort Tool
 
 Sort by
 
 ```
-RFile Age
+Age_Start
 ```
 
-Descending
+Descending.
 
-Result
+Output
 
-```
-31
-8
-1
-```
+| Age_Start | Age Group |
+| --------- | --------- |
+| 31        | 31-60     |
+| 8         | 8-30      |
+| 1         | 1-7       |
+
+The highest valid starting age is the correct range.
 
 ---
 
-### Step 7
-
-Add a **Sample Tool**
+# Step 6 - Sample Tool
 
 Choose
 
@@ -510,52 +239,135 @@ First 1 Row
 
 Now only
 
-```
-31
-```
+| Age | Age_Start | Age Group |
+| --- | --------- | --------- |
+| 48  | 31        | 31-60     |
 
 remains.
 
-Age Group becomes
-
-```
-31-60
-```
+You've found the correct Age Group.
 
 ---
 
-### Step 8
+# Another Example
 
-Join back with TFile (if required) or continue the flow to add the remaining columns and output to YFile.
+Suppose Age = **5**
+
+After Append
+
+| Age | Age_Start |
+| --- | --------- |
+| 5   | 1         |
+| 5   | 8         |
+| 5   | 31        |
+| 5   | 61        |
+| 5   | 91        |
+| 5   | 181       |
+| 5   | 366       |
+
+After Filter
+
+| Age | Age_Start |
+| --- | --------- |
+| 5   | 1         |
+
+After Sort
+
+Still
+
+| Age_Start | Age Group |
+| --------- | --------- |
+| 1         | 1-7       |
+
+Sample
+
+```
+1-7
+```
+
+Correct.
 
 ---
 
-# Recommended Complete Workflow
+# Another Example
+
+Age = **1500**
+
+After Filter
+
+| Age_Start |
+| --------- |
+| 1         |
+| 8         |
+| 31        |
+| 61        |
+| 91        |
+| 181       |
+| 366       |
+
+Sort Descending
+
+| Age_Start | Age Group |
+| --------- | --------- |
+| 366       | >365      |
+| 181       | 181-365   |
+| 91        | 91-180    |
+| 61        | 61-90     |
+
+Sample First 1
 
 ```
-TFile
-   │
-Input Data
-   │
-Select
-   │
-Formula (Age)
-   │
-Append Fields
-   │
-RFile
-   │
-Filter (Age >= RFile Age)
-   │
-Sort (RFile Age Desc)
-   │
-Sample (First 1)
-   │
-Formula (Group Owner, Owner)
-   │
-Select (Column Mapping)
-   │
-Output Data (YFile)
+>365
 ```
 
-This **dynamic workflow** is considered a best practice because if the age ranges in the RFile change (for example, adding `366–730` or modifying ranges), you only need to update the RFile—no changes to the Alteryx formulas are required.
+Correct.
+
+---
+
+# Final Workflow
+
+```text
+                 YFile
+                   |
+            Formula (Age)
+                   |
+                   |
+               Append Fields
+               /            \
+              /              \
+          YFile            RFile
+                             |
+                    Select Tool
+              Rename Age → Age_Start
+                   |
+               Append Fields
+                   |
+             Filter
+       [Age] >= [Age_Start]
+                   |
+                Sort
+       Age_Start Descending
+                   |
+               Sample
+             First 1 Row
+                   |
+          Correct Age Group
+```
+
+### One important improvement
+
+The **Sample Tool** works on the entire dataset, so if you have many YFile records, it would incorrectly keep only one row overall. To make this work for **every record**, add a **Record ID** to the YFile before the Append Fields, then:
+
+1. **Record ID** (creates a unique ID for each YFile row).
+2. **Append Fields**.
+3. **Filter** (`Age >= Age_Start`).
+4. **Sort** by:
+
+   * `RecordID` (Ascending)
+   * `Age_Start` (Descending)
+5. Use the **Tile Tool** with **Unique Value = RecordID** and assign row numbers within each RecordID group, or use a **Multi-Row Formula** to identify the first row in each RecordID group.
+6. Keep only the first row for each `RecordID`.
+
+This ensures that **every YFile record gets its own correct Age Group**, not just one record for the whole dataset.
+
+If you're processing hundreds or thousands of records, this grouped approach is the one you should use.
